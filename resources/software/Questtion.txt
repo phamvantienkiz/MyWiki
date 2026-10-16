@@ -1,0 +1,12 @@
+Level: Junior
+
+1. OOP cứ tập trung vào core của nó thôi 4 tính chất, nắm chi tiết của nó. Có ví dụ đc thì tốt.
+
+học SOLID, động đến tính chất nào phải ví dụ thực tế được chứ ko phải ví dụ kiểu con chim, con chó đâu :))
+Vd: Em hiểu về OOP và SOLID đúng ko? Em đã dùng tính chất nào, nói cho anh về nó và ví dụ thực tế em đã làm?
+Hoặc: Chữ D trong SOLID là gì? Em đã làm gì liên quan đến nó? (Cái này mà k nắm được interface là oẳng).
+Đấy, n ziczac đến nhau, người ta mà là techlead cứng kiến thức nền tảng mỗi OOP thôi họ xoay bác như chong chóng luôn :)))
+
+vì sao lại cần phải có interface
+---
+2. Phân biệt Object và Class
