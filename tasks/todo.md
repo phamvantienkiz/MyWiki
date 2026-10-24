@@ -50,3 +50,31 @@
   - [x] Chạy type-check TypeScript: `npx tsc --noEmit` đạt 0 lỗi <!-- id: 12.1 -->
   - [x] Chạy Production Build: `npm run build` thành công 100% (51/51 static pages) <!-- id: 12.2 -->
   - [x] Cập nhật `tasks/lessons.md` <!-- id: 12.3 -->
+
+---
+
+## Phần 3: Chuyên Đề Ôn Tập Phỏng Vấn AI Intern - BAHA Homes (`interview/`)
+
+- [x] Phân tích JD và Khảo sát thông tin chính thống về BAHA Homes & BAHA Group <!-- id: 13.1 -->
+- [x] Bóc tách nhu cầu tuyển dụng thực chất & triết lý: "Process → Data → Integration → Automation → AI" <!-- id: 13.2 -->
+- [x] Liên kết mạng lưới tri thức AI/ML/DL từ `wiki/` (Agentic AI, ReAct, Prompt, RAG, Tool Use) <!-- id: 13.3 -->
+- [x] Tích hợp tiêu chuẩn Kỹ nghệ Phần mềm (FastAPI, Clean Code, SOLID, REST API, Docker, n8n) <!-- id: 13.4 -->
+- [x] Nghiên cứu chuyên sâu bộ công cụ Antigravity (Desktop/CLI/IDE) và Google AI (AI Studio, Flow) <!-- id: 13.5 -->
+- [x] Xây dựng Single-File HTML `interview/index.html` chuẩn `lecture-visualizer` <!-- id: 13.6 -->
+  - [x] Bố cục Full-Width, Soft Clean Cards, Sticky Sidebar ScrollSpy, Progress Bar, KaTeX <!-- id: 13.6.1 -->
+  - [x] Canvas 3D Three.js mô phỏng căn hộ Vinhomes Grand Park tương tác 360 độ <!-- id: 13.6.2 -->
+  - [x] Bộ mô phỏng ReAct chu trình Antigravity step-by-step <!-- id: 13.6.3 -->
+  - [x] Nâng cấp Bảng trắc nghiệm 25 tiêu chí tự đánh giá độ sẵn sàng (Readiness Scorecard) <!-- id: 13.6.4 -->
+  - [x] Tuyển tập 30 kịch bản phỏng vấn thực tế & câu trả lời chuẩn Senior/Staff (20 câu GenAI + 5 câu Software Engineering + 5 câu Database & SQL) <!-- id: 13.6.5 -->
+  - [x] Tích hợp đầy đủ các Module nền tảng AI: Transformer (Self-Attention, RoPE, KV Cache, PagedAttention), LLMs (Pretrain/SFT/RLHF, LoRA, QLoRA, System 2 Reasoning o1/R1), Prompt Engineering (RICE, Injection defense), RAG (HNSW, Hybrid Search, Rerank, Ragas), Agent Harness (9 thành phần cốt lõi, Self-Healing) <!-- id: 13.6.6 -->
+  - [x] Mở rộng Module 08 toàn diện Kỹ nghệ Phần mềm (10 chuyên đề): Python Async/GIL/OOP, Design Patterns, Clean Code, Clean Architecture, SOLID, React & Next.js App Router, TypeScript, TailwindCSS, FastAPI, REST vs GraphQL, Realtime (SSE vs WebSocket vs Polling), JWT/OAuth2/RBAC, System Design & Microservices (Saga, Outbox, CAP), Nginx Reverse Proxy & Cloudflare CDN, Git/Docker/K8s/Cloud, và Bộ ba vận hành AI (MLOps, LLMOps, AIOps) <!-- id: 13.6.7 -->
+  - [x] Xây dựng Module 09 Cẩm Nang Cơ Sở Dữ Liệu Sư Phạm Từ Đầu: DB vs DBMS, DDL/DML/DQL & Thứ tự thực thi SQL Engine, Toàn tập phép JOIN (Inner/Left/Right/Full/Cross/Self), Subquery/CTE/Window Functions, Chuẩn hóa 1NF-3NF vs Phi chuẩn hóa, Giao dịch ACID & 4 Cấp độ cô lập (MVCC), B+Tree Index & EXPLAIN ANALYZE, Toàn cảnh NoSQL (Mongo, Redis, Cassandra, Neo4j) & BASE, CSDL Vector & pgvector cho AI Engineer, Bảng quyết định chọn DB <!-- id: 13.6.8 -->
+- [x] Kiểm thử cú pháp HTML, kiểm thử cú pháp JavaScript bằng Node.js đạt 0 lỗi, 100% 49 anchor links & tag balance hợp lệ (240KB HTML) <!-- id: 13.7 -->
+- [x] Tái cấu trúc Design System 3 Tầng & Thiết lập Chế độ Dark Mode Chuẩn Mực (`interview/`) <!-- id: 13.8 -->
+  - [x] Phân tích hiện trạng design system, loại bỏ 100% hardcoded hex trong inline styles <!-- id: 13.8.1 -->
+  - [x] Thiết lập bảng màu Dark Mode chuẩn Surface Elevation (0dp - 4dp) & WCAG AA Contrast <!-- id: 13.8.2 -->
+  - [x] Bảo tồn trọn vẹn 4 nhóm tín hiệu sư phạm (Callout Intuition 🌱, Def 📘, Tip 💡, Warn ⚠️) <!-- id: 13.8.3 -->
+  - [x] Tích hợp Theme Controller Engine: Lưu localStorage, lắng nghe prefers-color-scheme, toggle smooth transition 250ms <!-- id: 13.8.4 -->
+  - [x] Cập nhật tài liệu quy hoạch `docs/plan/01_design_system_spec.md`, `docs/plan/00_master_plan.md` & tạo chuyên đề `docs/plan/06_dark_mode_design_system.md` <!-- id: 13.8.5 -->
+- [x] Bổ sung cẩm nang sử dụng chi tiết Google Antigravity Desktop (App 2.0) từ tài liệu chính thức `https://antigravity.google/docs/getting-started/` (Hệ thống Slash Commands `/plan`, `/goal`, `/schedule`, `/grill-me`, cơ chế cô lập Git Worktree Mode, bảng phím tắt điều hướng, phân quyền bảo tầng và kịch bản thực chiến BAHA Homes) <!-- id: 13.9 -->
+- [x] Tích hợp cẩm nang chuyên sâu Antigravity Python SDK (`google-antigravity`) & Ma trận hiệp đồng 4 bề mặt từ `https://antigravity.google/docs/sdk/overview/` (Async context manager, streaming đa kênh, custom tools & subagents, declarative policies, session persistence và ví dụ microservice FastAPI) <!-- id: 13.10 -->
