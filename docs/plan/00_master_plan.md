@@ -4,7 +4,7 @@
 > 1. **Giao diện Mặc định là Đồ thị Tri thức (Graph-First Home)**: Khi vào trang web, hiển thị ngay đồ thị mạng lưới liên kết trực quan giữa các khái niệm — tinh gọn, đơn giản, không rườm rà.
 > 2. **Trải nghiệm Đọc Tài liệu chuẩn `lecture-visualizer`**: Khi click vào một node trên đồ thị (hoặc tìm kiếm), người dùng có thể xem nhanh tài liệu (Quick View Drawer) hoặc mở toàn trang. Nội dung các file trong `wiki/` được trình bày theo phương pháp sư phạm *"Dành Cho Người Học Chậm"*: Trực giác trước ký hiệu sau, bảng từ điển ký hiệu 4 cột, hộp thoại `.callout.intuition` 🌱, KaTeX toán học sắc nét, trace số học từng bước, và bảng đối chiếu mâu thuẫn.
 > 3. **Kiến trúc Mở rộng Bài học Tương lai (Future Learning Modules)**: Hệ thống sẵn sàng để sau này khi người dùng muốn học một chuyên đề mới, chỉ cần thêm bài học (hoặc yêu cầu AI tạo) vào hệ thống, bài học đó sẽ tự động được render chuẩn `lecture-visualizer` và kết nối ngay vào đồ thị.
-> 4. **Design System Nhất quán**: Toàn bộ UI tuân thủ triệt để [soft-clean-cards.md](../../docs/references/soft-clean-cards.md) (Card trắng bo góc 28px, đổ bóng mờ nhẹ, khoảng trắng rộng rãi, màu sắc chỉ dùng cho dữ liệu).
+> 4. **Design System Nhất quán (Đầy đủ Light & Dark Mode)**: Toàn bộ UI tuân thủ triệt để [01_design_system_spec.md](01_design_system_spec.md) và [06_dark_mode_design_system.md](06_dark_mode_design_system.md) (Kiến trúc Token 3 Tầng, Soft Cards bo góc 26-28px, phân tầng Surface Elevation trong Dark Mode từ 0dp đến 4dp, bảo tồn 100% tín hiệu sư phạm, chuẩn tương phản WCAG AA).
 
 ---
 
