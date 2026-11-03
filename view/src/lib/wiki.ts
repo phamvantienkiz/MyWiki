@@ -81,19 +81,31 @@ export async function getAllEntities(): Promise<EntityMetadata[]> {
       const titleMatch = content.match(/^#\s+(.+)$/m);
       const title = titleMatch ? titleMatch[1].trim() : slug;
 
-      // Extract summary from "## Tóm tắt" or first paragraph
+      // Extract summary from "## Tóm tắt", blockquote "Tóm tắt điều hành", or first paragraph
       let summary = '';
-      const summaryMatch = content.match(/##\s+Tóm tắt\s+([\s\S]*?)(?=##|\n#|$)/i);
+      const summaryMatch = content.match(/##\s+(?:\d+\.\s+)?Tóm tắt[^\n]*\n([\s\S]*?)(?=##|\n#|$)/i);
       if (summaryMatch) {
-        summary = summaryMatch[1].trim();
+        summary = summaryMatch[1].replace(/^\s*>\s*/gm, '').trim();
       } else {
-        const firstPara = content.split('\n\n')[1] || '';
-        summary = firstPara.trim();
+        const execMatch = content.match(/>\s*\*\*Tóm tắt điều hành\*\*:\s*([\s\S]*?)(?=\n\n|$)/i);
+        if (execMatch) {
+          summary = execMatch[1].replace(/\n>\s*/g, ' ').trim();
+        } else {
+          // Find first paragraph that is not a heading or metadata blockquote
+          const paras = content.split('\n\n');
+          for (const p of paras) {
+            const trimmed = p.trim();
+            if (trimmed && !trimmed.startsWith('#') && !trimmed.startsWith('>') && !trimmed.startsWith('---')) {
+              summary = trimmed;
+              break;
+            }
+          }
+        }
       }
 
       // Extract canonical definition snippet
       let canonicalDef = '';
-      const canonMatch = content.match(/##\s+1\.\s+Định nghĩa Chính thống\s+([\s\S]*?)(?=##|\n#|$)/i);
+      const canonMatch = content.match(/##\s+(?:\d+\.\s+)?(?:Định nghĩa [^\n]+|Nền Tảng[^\n]+|Bối Cảnh[^\n]+)\n([\s\S]*?)(?=##|\n#|$)/i);
       if (canonMatch) {
         canonicalDef = canonMatch[1].trim().substring(0, 300) + '...';
       }

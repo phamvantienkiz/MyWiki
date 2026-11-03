@@ -32,6 +32,45 @@ function renderWikiLinks(text: string): string {
   });
 }
 
+function parseTables(text: string): string {
+  // Replace Markdown tables with styled HTML tables
+  return text.replace(
+    /(?:^|\n)(\|.+?\|\n\|[-: |]+\|\n(?:\|.+?\|\n?)+)/g,
+    (match) => {
+      const lines = match.trim().split('\n');
+      if (lines.length < 2) return match;
+
+      const headerCells = lines[0]
+        .split('|')
+        .slice(1, -1)
+        .map(c => c.trim());
+
+      const bodyRows = lines.slice(2);
+
+      let tableHtml = '<div class="my-5 overflow-x-auto rounded-[14px] border border-[#E9E9EE] bg-white shadow-sm">';
+      tableHtml += '<table class="w-full text-left text-[14px] border-collapse">';
+      tableHtml += '<thead class="bg-[#F4F4F6] text-[#0B0B0F] border-b border-[#E9E9EE] font-semibold"><tr>';
+      for (const h of headerCells) {
+        tableHtml += `<th class="py-3 px-4 whitespace-nowrap">${h}</th>`;
+      }
+      tableHtml += '</tr></thead>';
+
+      tableHtml += '<tbody class="divide-y divide-[#EFEFF2] text-[#333338]">';
+      for (const row of bodyRows) {
+        if (!row.includes('|')) continue;
+        const cells = row.split('|').slice(1, -1).map(c => c.trim());
+        tableHtml += '<tr class="hover:bg-[#F9F9FB] transition-colors">';
+        for (const cell of cells) {
+          tableHtml += `<td class="py-2.5 px-4">${cell}</td>`;
+        }
+        tableHtml += '</tr>';
+      }
+      tableHtml += '</tbody></table></div>';
+      return '\n\n' + tableHtml + '\n\n';
+    }
+  );
+}
+
 function markdownToHtml(md: string): string {
   let html = md;
 
@@ -39,6 +78,8 @@ function markdownToHtml(md: string): string {
   html = renderMath(html);
   // Wiki-links
   html = renderWikiLinks(html);
+  // Markdown Tables
+  html = parseTables(html);
 
   // Headers
   html = html.replace(/^### (.*$)/gim, '<h3 class="text-[17px] font-semibold text-[#0B0B0F] mt-5 mb-2">$1</h3>');
@@ -59,7 +100,14 @@ function markdownToHtml(md: string): string {
   // Inline code `code`
   html = html.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded-[6px] bg-[#F4F4F6] text-[#0B0B0F] font-mono text-[13px] border border-[#EFEFF2]">$1</code>');
 
-  // Blockquotes / Callouts
+  // GitHub Alert callouts: > [!NOTE], > [!TIP], > [!IMPORTANT], > [!WARNING], > [!CRITICAL]
+  html = html.replace(/^\>\s*\[\!(NOTE|TIP|IMPORTANT|WARNING|CRITICAL|CAUTION)\]\s*(.*$)/gim, (_, type, rest) => {
+    const t = type.toUpperCase();
+    const borderCol = t === 'CRITICAL' || t === 'WARNING' || t === 'CAUTION' ? 'border-amber-500 bg-amber-50/60 text-amber-900' : 'border-[#1F5FFF] bg-[#F4F4F6] text-[#0B0B0F]';
+    return `<div class="my-3 border-l-4 ${borderCol} p-3 rounded-r-[10px] text-[14px] font-medium"><span class="font-bold uppercase text-[11px] block tracking-wider mb-1">${t}</span>${rest}`;
+  });
+
+  // Generic Blockquotes
   html = html.replace(/^\> (.*$)/gim, '<blockquote class="border-l-2 border-[#1F5FFF] pl-4 py-1 my-3 text-[#6B6B76] bg-[#F4F4F6]/50 rounded-r-[8px] italic">$1</blockquote>');
 
   // Unordered lists
@@ -83,60 +131,65 @@ export function parseLecture(entity: EntityMetadata): ParsedLecture {
   const content = entity.contentRaw;
   const domain = DOMAINS[entity.domainId];
 
-  // 1. Extract Sections for ScrollSpy
+  // 1. Dynamic extraction of all body sections
+  const rawSections = content.split(/\n(?=##\s+)/);
+  const contentSections: { id: string; title: string; level: number; html: string }[] = [];
+
+  for (let idx = 0; idx < rawSections.length; idx++) {
+    const sec = rawSections[idx];
+    const match = sec.match(/^##\s+(.+)$/m);
+    if (!match) continue;
+    const rawHeading = match[1].trim();
+
+    // Exclude summary (rendered in Hero) and Wiki links (rendered in Section 8)
+    if (/tóm tắt/i.test(rawHeading) || /mạng lưới liên kết|wiki links/i.test(rawHeading)) {
+      continue;
+    }
+
+    const secBody = sec.replace(/^##\s+.+$/m, '').trim();
+    // Generate clean URL/DOM safe ID
+    const cleanId = 'sec-body-' + idx + '-' + rawHeading.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    
+    contentSections.push({
+      id: cleanId,
+      title: rawHeading,
+      level: 2,
+      html: markdownToHtml(secBody),
+    });
+  }
+
+  // 2. Build Sidebar Sections for ScrollSpy
   const sections: LectureSection[] = [
     { id: 'sec-intuition', title: 'Trực Giác Bản Chất', level: 2 },
     { id: 'sec-dictionary', title: 'Từ Điển Ký Hiệu & Khái Niệm', level: 2 },
-    { id: 'sec-definition', title: 'Định Nghĩa Chính Thống & Toán Học', level: 2 },
-    { id: 'sec-mechanism', title: 'Cơ Chế Kiến Trúc & Sơ Đồ', level: 2 },
-    { id: 'sec-intuition-slow', title: 'Góc Dành Cho Người Học Chậm', level: 2 },
-    { id: 'sec-discrepancies', title: 'Mâu Thuẫn & Sắc Thái Thực Chiến', level: 2 },
+    ...contentSections.map(cs => ({ id: cs.id, title: cs.title, level: cs.level })),
+    { id: 'sec-intuition-slow', title: 'Góc Cho Người Học Chậm', level: 2 },
     { id: 'sec-qa', title: 'Câu Hỏi Phỏng Vấn & Phản Biện', level: 2 },
     { id: 'sec-network', title: 'Mạng Lưới Tri Thức & Tài Liệu Gốc', level: 2 },
   ];
 
-  // 2. Extract Canonical Definition
-  let canonicalDefHtml = '';
-  const canonMatch = content.match(/##\s+1\.\s+Định nghĩa Chính thống\s+([\s\S]*?)(?=##|\n#|$)/i);
-  if (canonMatch) {
-    canonicalDefHtml = markdownToHtml(canonMatch[1].trim());
-  }
-
-  // 3. Extract Mechanism
-  let mechanismHtml = '';
-  const mechMatch = content.match(/##\s+2\.\s+Cơ chế Hoạt động & Kiến trúc\s+([\s\S]*?)(?=##|\n#|$)/i);
-  if (mechMatch) {
-    mechanismHtml = markdownToHtml(mechMatch[1].trim());
-  }
-
-  // 4. Extract Discrepancies
+  // 3. Fallback extraction for compatibility
+  let canonicalDefHtml = contentSections[0]?.html || '';
+  let mechanismHtml = contentSections[1]?.html || '';
   let discrepanciesHtml = '';
-  const discMatch = content.match(/##\s+3\.\s+So sánh, Mâu thuẫn & Sắc thái\s+([\s\S]*?)(?=##|\n#|$)/i);
+  const discMatch = content.match(/##\s+(?:\d+\.\s+)?(?:So sánh|Mâu thuẫn)[^\n]*\n([\s\S]*?)(?=##|\n#|$)/i);
   if (discMatch) {
     discrepanciesHtml = markdownToHtml(discMatch[1].trim());
   }
 
-  // 5. Extract Practical & Questions
-  let practicalHtml = '';
+  // 4. Extract Questions for QAAccordion
   const qaList: QAItem[] = [];
-  const pracMatch = content.match(/##\s+4\.\s+Góc nhìn Thực chiến & Phỏng vấn\s+([\s\S]*?)(?=##|\n#|$)/i);
-  if (pracMatch) {
-    const rawPrac = pracMatch[1].trim();
-    practicalHtml = markdownToHtml(rawPrac);
-
-    // Extract questions starting with "Câu hỏi phỏng vấn" or "Q:" or bold questions
-    const qMatches = rawPrac.match(/(?:Câu hỏi phỏng vấn|Q:|Hỏi:)\s*([^\n\?]+\?)([\s\S]*?)(?=(?:Câu hỏi|Q:|Hỏi:)|$)/gi);
-    if (qMatches) {
-      for (const qBlock of qMatches) {
-        const parts = qBlock.split('\n');
-        const question = parts[0].replace(/^(?:Câu hỏi phỏng vấn\s*\d*:?|Q:|Hỏi:)\s*/i, '').trim();
-        const answer = parts.slice(1).join('\n').trim();
-        if (question) {
-          qaList.push({
-            question,
-            answer: markdownToHtml(answer || 'Xem chi tiết trong mục phân tích thực chiến.'),
-          });
-        }
+  const qMatches = content.match(/(?:Câu hỏi phỏng vấn|Q:|Hỏi:)\s*([^\n\?]+\?)([\s\S]*?)(?=(?:Câu hỏi|Q:|Hỏi:)|##|$)/gi);
+  if (qMatches) {
+    for (const qBlock of qMatches) {
+      const parts = qBlock.split('\n');
+      const question = parts[0].replace(/^(?:Câu hỏi phỏng vấn\s*\d*:?|Q:|Hỏi:)\s*/i, '').replace(/^\*+|\*+$/g, '').trim();
+      const answer = parts.slice(1).join('\n').trim();
+      if (question) {
+        qaList.push({
+          question,
+          answer: markdownToHtml(answer || 'Xem chi tiết trong mục phân tích thực chiến.'),
+        });
       }
     }
   }
@@ -145,11 +198,11 @@ export function parseLecture(entity: EntityMetadata): ParsedLecture {
   if (qaList.length === 0) {
     qaList.push({
       question: `Trọng tâm phỏng vấn Senior AI về ${entity.title} là gì?`,
-      answer: markdownToHtml(`Khi phỏng vấn về ${entity.title}, các câu hỏi sẽ xoay quanh: (1) Bản chất toán học/kiến trúc nền tảng; (2) Các đánh đổi (Trade-offs) trong triển khai thực tế; (3) Cách phát hiện và khắc phục các Failure Modes điển hình.`),
+      answer: markdownToHtml(`Khi phỏng vấn về ${entity.title}, các câu hỏi trọng tâm bao gồm: (1) Bản chất toán học và kiến trúc hệ thống nền tảng; (2) Các đánh đổi kỹ thuật (Trade-offs) trong triển khai thực tế; (3) Cách thiết kế bộ rào chắn an toàn (Guardrails) và xử lý lỗi hệ thống khi vận hành production.`),
     });
   }
 
-  // 6. Generate Pedagogical Symbol Dictionary (Bảng từ điển ký hiệu 4 cột)
+  // 5. Pedagogical Symbol Dictionary
   const symbols: SymbolItem[] = [
     {
       symbol: '\\mathcal{M}',
@@ -186,7 +239,8 @@ export function parseLecture(entity: EntityMetadata): ParsedLecture {
     canonicalDefHtml,
     mechanismHtml,
     discrepanciesHtml,
-    practicalHtml,
+    practicalHtml: '',
+    contentSections,
     symbols,
     qaList,
     sections,

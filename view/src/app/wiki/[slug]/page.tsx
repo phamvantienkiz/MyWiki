@@ -93,35 +93,27 @@ export default async function WikiDetailPage({ params }: WikiPageProps) {
             <SymbolDictionary symbols={lecture.symbols} />
           </div>
 
-          {/* Section 3: Định Nghĩa Chính Thống & Công Thức Toán Học */}
-          <Card id="sec-definition" className="p-8">
-            <div className="flex items-center gap-2 pb-3 border-b border-[#EFEFF2]">
-              <span className="text-[20px]">📐</span>
-              <h2 className="text-[20px] font-bold text-[#0B0B0F]">
-                1. Định Nghĩa Chính Thống & Cơ Sở Toán Học
-              </h2>
-            </div>
-            <div
-              className="prose prose-slate max-w-none text-[15px] leading-relaxed text-[#333338]"
-              dangerouslySetInnerHTML={{ __html: lecture.canonicalDefHtml }}
-            />
-          </Card>
+          {/* Dynamic Content Sections: Toàn bộ nội dung bài viết được kết xuất trung thực */}
+          {lecture.contentSections.map((sec, idx) => {
+            const icons = ['📐', '⚙️', '⚖️', '💡', '🛡️', '⚡', '📊', '🔍'];
+            const icon = icons[idx % icons.length];
+            return (
+              <Card key={sec.id} id={sec.id} className="p-8">
+                <div className="flex items-center gap-2 pb-3 border-b border-[#EFEFF2] mb-4">
+                  <span className="text-[20px]">{icon}</span>
+                  <h2 className="text-[20px] font-bold text-[#0B0B0F]">
+                    {sec.title}
+                  </h2>
+                </div>
+                <div
+                  className="prose prose-slate max-w-none text-[15px] leading-relaxed text-[#333338]"
+                  dangerouslySetInnerHTML={{ __html: sec.html }}
+                />
+              </Card>
+            );
+          })}
 
-          {/* Section 4: Cơ Chế Hoạt Động & Kiến Trúc */}
-          <Card id="sec-mechanism" className="p-8">
-            <div className="flex items-center gap-2 pb-3 border-b border-[#EFEFF2]">
-              <span className="text-[20px]">⚙️</span>
-              <h2 className="text-[20px] font-bold text-[#0B0B0F]">
-                2. Cơ Chế Hoạt Động & Kiến Trúc Kỹ Nghệ
-              </h2>
-            </div>
-            <div
-              className="prose prose-slate max-w-none text-[15px] leading-relaxed text-[#333338]"
-              dangerouslySetInnerHTML={{ __html: lecture.mechanismHtml }}
-            />
-          </Card>
-
-          {/* Section 5: Hộp Thoại Góc Dành Cho Người Học Chậm */}
+          {/* Section: Hộp Thoại Góc Dành Cho Người Học Chậm */}
           <div id="sec-intuition-slow">
             <IntuitionCallout>
               <p className="font-medium">
@@ -130,17 +122,7 @@ export default async function WikiDetailPage({ params }: WikiPageProps) {
             </IntuitionCallout>
           </div>
 
-          {/* Section 6: Hộp Thoại Mâu Thuẫn & Sắc Thái Thực Chiến */}
-          <div id="sec-discrepancies">
-            <DiscrepancyCallout>
-              <div
-                className="prose prose-sm max-w-none text-[#991B1B]"
-                dangerouslySetInnerHTML={{ __html: lecture.discrepanciesHtml }}
-              />
-            </DiscrepancyCallout>
-          </div>
-
-          {/* Section 7: Bộ Câu Hỏi Phỏng Vấn & Phản Biện Accordion */}
+          {/* Section: Bộ Câu Hỏi Phỏng Vấn & Phản Biện Accordion */}
           <div id="sec-qa">
             <QAAccordion items={lecture.qaList} />
           </div>

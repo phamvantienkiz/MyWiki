@@ -76,6 +76,7 @@ export const DOMAIN_SLUG_MAP: Record<string, DomainId> = {
   'prompt-engineering': 'genai',
   'llm-evaluation': 'genai',
   'quantization-and-compression': 'genai',
+  'ms-swift-llm-finetuning': 'genai',
 
   // Miền 2: RAG
   'rag-architecture': 'rag',
@@ -85,6 +86,7 @@ export const DOMAIN_SLUG_MAP: Record<string, DomainId> = {
   'reranking': 'rag',
   'query-transformation': 'rag',
   'graph-rag': 'rag',
+  'modular-rag-production': 'rag',
 
   // Miền 3: Agentic
   'agentic-ai-core': 'agentic',
@@ -103,6 +105,7 @@ export const DOMAIN_SLUG_MAP: Record<string, DomainId> = {
   'vision-transformers': 'deeplearning',
   'inference-optimization-tensorrt': 'deeplearning',
   'graph-neural-networks': 'deeplearning',
+  'multi-label-classification': 'deeplearning',
 
   // Miền 5: ML & Math
   'linear-regression-mle': 'mlmath',
@@ -120,6 +123,8 @@ export const DOMAIN_SLUG_MAP: Record<string, DomainId> = {
   'containerization-kubernetes-ml': 'mlops',
   'continuous-integration-cd-ml': 'mlops',
   'data-drift-model-monitoring': 'mlops',
+  'docker-ai-inference-packaging': 'mlops',
+  'fastapi-production-ml-serving': 'mlops',
 
   // Miền 7: Software
   'oop-core-principles': 'software',
@@ -127,4 +132,6 @@ export const DOMAIN_SLUG_MAP: Record<string, DomainId> = {
   'database-indexing-optimization': 'software',
   'acid-and-transactions': 'software',
   'sql-vs-nosql-data-architecture': 'software',
+  'modern-data-pipeline': 'software',
+  'apache-iceberg': 'software',
 };

@@ -18,6 +18,13 @@ export interface LectureSection {
   level: number;
 }
 
+export interface ContentSection {
+  id: string;
+  title: string;
+  level: number;
+  html: string;
+}
+
 export interface ParsedLecture {
   slug: string;
   title: string;
@@ -28,6 +35,7 @@ export interface ParsedLecture {
   mechanismHtml: string;
   discrepanciesHtml: string;
   practicalHtml: string;
+  contentSections: ContentSection[];
   symbols: SymbolItem[];
   qaList: QAItem[];
   sections: LectureSection[];
