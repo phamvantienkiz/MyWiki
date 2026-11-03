@@ -76,6 +76,7 @@ Một trong những lỗi phổ biến nhất của kỹ sư mới vào ngành l
 
 ## 5. Mạng lưới Liên kết Tri thức (Knowledge Graph & `wiki-links`)
 - [[large-language-models]] — Đối tượng thực hiện quá trình tinh chỉnh.
+- [[ms-swift-llm-finetuning]] — Framework MS-SWIFT chuẩn hóa quy trình SFT, DDP/ZeRO, can thiệp mid-adapter và vLLM deployment.
 - [[llm-alignment]] — Bước tiếp theo sau SFT (RLHF / DPO).
 - [[quantization-and-compression]] — Nền tảng kỹ thuật lượng tử hóa 4-bit của QLoRA.
 - [[rag-architecture]] — Chiến lược kiến trúc bổ trợ và phân định ranh giới với Fine-Tuning.

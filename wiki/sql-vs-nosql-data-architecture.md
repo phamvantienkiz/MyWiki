@@ -75,5 +75,7 @@ flowchart TD
 
 ## 5. Mạng lưới Liên kết Tri thức (Knowledge Graph & `wiki-links`)
 - [[database-indexing-optimization]] — Tối ưu hóa chỉ mục trong hệ quản trị cơ sở dữ liệu quan hệ.
+- [[modern-data-pipeline]] — Kiến trúc Data Pipeline hiện đại, mô hình chiều Kimball và Snowflake 3 tầng.
+- [[apache-iceberg]] — Chi tiết định dạng bảng mở Apache Iceberg, 3-level pruning và hồ dữ liệu lai S3.
 - [[acid-and-transactions]] — So sánh đối chiếu giữa nguyên lý ACID của SQL và BASE của NoSQL.
 - [[mlops-lifecycle]] — Dữ liệu từ Lakehouse là đầu vào nuôi sống các pipeline huấn luyện AI.

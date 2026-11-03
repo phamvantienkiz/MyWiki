@@ -80,6 +80,7 @@ flowchart TD
 ---
 
 ## 5. Mạng lưới Liên kết Tri thức (Knowledge Graph & `wiki-links`)
+- [[modular-rag-production]] — Chi tiết kiến trúc Modular RAG và bộ rào chắn an toàn Production Guardrails.
 - [[document-chunking]] — Kỹ thuật phân tách tài liệu nguồn.
 - [[vector-embeddings]] — Biểu diễn toán học của văn bản trong không gian vector.
 - [[hybrid-search]] — Kết hợp truy xuất ngữ nghĩa và truy xuất từ khóa chính xác.

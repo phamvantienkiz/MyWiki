@@ -91,6 +91,7 @@ resources:
 
 ## 5. Mạng lưới Liên kết Tri thức (Knowledge Graph & `wiki-links`)
 - [[mlops-lifecycle]] — Môi trường đóng gói phần mềm trong chu trình MLOps.
+- [[docker-ai-inference-packaging]] — Kỹ thuật đóng gói suy luận AI với Docker Compose, tối ưu PyTorch CPU và volume artifacts.
 - [[model-serving-api]] — Ứng dụng được chứa đựng bên trong các container.
 - [[continuous-integration-cd-ml]] — CI/CD tự động xây dựng Docker image và deploy lên cụm K8s.
 - [[data-drift-model-monitoring]] — Giám sát hạ tầng container và Pods qua Prometheus.

@@ -28,6 +28,7 @@ graph TD
         GradVan --> CNN["[[convolutional-neural-networks|Mạng Tích chập & ResNet]]"]
         CNN --> UNet["[[unet-architecture|Kiến trúc U-Net & Phân đoạn Ảnh]]"]
         CNN --> YOLO["[[object-detection-yolo|Phát hiện Vật thể YOLOv1-v10]]"]
+        CNN --> MultiLabel["[[multi-label-classification|Phân loại Đa nhãn & C2AE]]"]
         GradVan --> Trans["[[transformer-architecture|Kiến trúc Transformer & Attention]]"]
         Trans --> ViT["[[vision-transformers|Vision Transformer & Swin]]"]
         CNN --> GNN["[[graph-neural-networks|Mạng Nơ-ron Đồ thị (GNN)]]"]
@@ -37,6 +38,7 @@ graph TD
         Trans --> LLM["[[large-language-models|Mô hình Ngôn ngữ Lớn (LLM)]]"]
         LLM --> Reas["[[llm-reasoning|Suy luận System 2 (CoT / o1 / R1)]]"]
         LLM --> SFT["[[llm-fine-tuning|Tinh chỉnh LoRA & QLoRA]]"]
+        SFT --> MSSwift["[[ms-swift-llm-finetuning|MS-SWIFT LLM Fine-Tuning]]"]
         LLM --> Align["[[llm-alignment|Căn chỉnh An toàn (RLHF / DPO)]]"]
         LLM --> Prompt["[[prompt-engineering|Kỹ nghệ Câu lệnh & ICL]]"]
         LLM --> Quant["[[quantization-and-compression|Lượng tử hóa AWQ / GPTQ / GGUF]]"]
@@ -45,6 +47,7 @@ graph TD
 
     subgraph 5. Retrieval-Augmented Generation (RAG)
         LLM --> RAG["[[rag-architecture|Kiến trúc RAG (Naive to Agentic)]]"]
+        RAG --> ModRAG["[[modular-rag-production|Modular RAG & Guardrails]]"]
         RAG --> Chunk["[[document-chunking|Chiến lược Phân đoạn (Chunking)]]"]
         RAG --> Vec["[[vector-embeddings|Vector Nhúng & HNSW Index]]"]
         RAG --> Hybrid["[[hybrid-search|Tìm kiếm Lai (Dense + BM25)]]"]
@@ -69,7 +72,9 @@ graph TD
         SFT --> MLOps["[[mlops-lifecycle|Vòng đời MLOps & Production Script]]"]
         MLOps --> RegHub["[[experiment-tracking-model-registry|Tracking & Model Registry]]"]
         MLOps --> Serve["[[model-serving-api|Serving API (FastAPI / Triton)]]"]
+        Serve --> FastAPIServe["[[fastapi-production-ml-serving|FastAPI ML Serving]]"]
         MLOps --> K8s["[[containerization-kubernetes-ml|Docker & Kubernetes]]"]
+        K8s --> DockerAI["[[docker-ai-inference-packaging|Docker Packaging AI Inference]]"]
         MLOps --> CICD["[[continuous-integration-cd-ml|CI/CD/CT cho Machine Learning]]"]
         Serve --> Drift["[[data-drift-model-monitoring|Giám sát Data & Concept Drift]]"]
     end
@@ -80,6 +85,8 @@ graph TD
         Serve --> SQL["[[database-indexing-optimization|Chỉ mục DB & Tối ưu SQL]]"]
         SQL --> ACID["[[acid-and-transactions|Giao dịch & Nguyên lý ACID]]"]
         SQL --> NoSQL["[[sql-vs-nosql-data-architecture|Kiến trúc SQL, NoSQL & Lakehouse]]"]
+        NoSQL --> DataPipe["[[modern-data-pipeline|Data Pipeline & Medallion]]"]
+        NoSQL --> Iceberg["[[apache-iceberg|Apache Iceberg & Open Lakehouse]]"]
     end
 ```
 
@@ -109,7 +116,7 @@ graph TD
 
 ## 📚 Mục Lục Phân Tầng Theo 7 Miền Tri Thức
 
-### Miền 1: Generative AI, Foundation Models & Reasoning (8 thực thể)
+### Miền 1: Generative AI, Foundation Models & Reasoning (9 thực thể)
 - [[large-language-models]] — [Mô hình Ngôn ngữ Lớn (LLM)](large-language-models.md): Bản chất xác suất, Scaling Laws, phân loại Causal Decoder-only và năng lực đột sinh.
 - [[transformer-architecture]] — [Kiến trúc Transformer](transformer-architecture.md): Cơ chế Scaled Dot-Product Self-Attention, Multi-Head Attention, RoPE, GQA và phân tích bộ nhớ KV Cache.
 - [[llm-reasoning]] — [Suy luận trong LLM](llm-reasoning.md): Chuyển dịch từ tư duy System 1 sang System 2 qua Chain-of-Thought, Tree-of-Thoughts, và Test-time Compute (OpenAI o1/o3, DeepSeek-R1).
@@ -118,8 +125,9 @@ graph TD
 - [[prompt-engineering]] — [Kỹ nghệ Câu lệnh & ICL](prompt-engineering.md): Cơ chế In-Context Learning, bộ khung cấu trúc prompt chuẩn production, và phòng chống Prompt Injection.
 - [[llm-evaluation]] — [Đánh giá & Benchmark LLM](llm-evaluation.md): Hạn chế của BLEU/ROUGE, phương pháp LLM-as-a-Judge, kiểm soát thiên kiến vị trí/độ dài và khung đánh giá Ragas.
 - [[quantization-and-compression]] — [Lượng tử hóa & Nén Mô hình](quantization-and-compression.md): Toán học lượng tử hóa tuyến tính, kỹ thuật AWQ, GPTQ, GGUF và giải phóng nút thắt Memory-Bound lúc inference.
+- [[ms-swift-llm-finetuning]] — [Tinh chỉnh LLM với MS-SWIFT](ms-swift-llm-finetuning.md): Quy trình 5 bước khép kín (sft/infer/eval/export/deploy), phân tán DDP/ZeRO, tiêm mid-adapter khởi tạo 0 và deploy vLLM.
 
-### Miền 2: RAG & Hệ Thống Truy Xuất Thông Tin (7 thực thể)
+### Miền 2: RAG & Hệ Thống Truy Xuất Thông Tin (8 thực thể)
 - [[rag-architecture]] — [Kiến trúc RAG Tổng thể](rag-architecture.md): Tiến hóa qua 4 thế hệ (Naive, Advanced, Modular, Agentic RAG) và giải pháp triệt tiêu Ảo giác tri thức.
 - [[document-chunking]] — [Chiến lược Phân đoạn Tài liệu](document-chunking.md): Trade-off kích thước chunk, Recursive Character, Semantic Chunking và phương pháp phân tầng Parent-Document.
 - [[vector-embeddings]] — [Vector Nhúng & Tìm kiếm ANN](vector-embeddings.md): Không gian vector ngữ nghĩa, độ đo Cosine/Dot-Product và thuật toán đồ thị phân tầng HNSW.
@@ -127,6 +135,7 @@ graph TD
 - [[reranking]] — [Xếp hạng Lại với Cross-Encoders](reranking.md): Kiến trúc hai tầng (Two-stage Retrieval), cơ chế All-to-All Attention và tối ưu hóa chi phí ngữ cảnh.
 - [[query-transformation]] — [Chuyển đổi & Mở rộng Truy vấn](query-transformation.md): Cầu nối ngữ nghĩa qua HyDE (Hypothetical Document Embeddings), Sub-query Decomposition và Step-back Prompting.
 - [[graph-rag]] — [Graph RAG & Đồ thị Tri thức](graph-rag.md): Khắc phục điểm mù toàn cục của Vector RAG bằng phân cụm cộng đồng Leiden và tóm tắt phân tầng Map-Reduce.
+- [[modular-rag-production]] — [Kiến trúc Modular RAG & Guardrails](modular-rag-production.md): Quy trình Indexing/Generation tách rời, 7 chiến lược chunking, Hybrid RRF, Sandwich Ordering và phòng vệ 3 lớp.
 
 ### Miền 3: Agentic AI & Các Mẫu Thiết Kế Tác Nhân (8 thực thể)
 - [[agentic-ai-core]] — [Kiến trúc Cốt lõi Agentic AI](agentic-ai-core.md): Mental model "LLM là CPU, Agent là Process, Framework là OS"; chu trình khép kín Perceive-Plan-Act-Observe-Reflect.
@@ -138,13 +147,14 @@ graph TD
 - [[agent-memory-systems]] — [Hệ thống Bộ nhớ Tác nhân](agent-memory-systems.md): Phân tầng 4 cấp độ (Working, Episodic, Semantic, Procedural) và kiến trúc phân trang MemGPT.
 - [[human-in-the-loop]] — [Con người trong Vòng lặp & Quản trị](human-in-the-loop.md): Cổng phê duyệt an toàn (Approval Gates), đặc quyền tối thiểu và phân định trách nhiệm pháp lý.
 
-### Miền 4: Deep Learning & Computer Vision / NLP (6 thực thể)
+### Miền 4: Deep Learning & Computer Vision / NLP (7 thực thể)
 - [[convolutional-neural-networks]] — [Mạng Tích chập & ResNet](convolutional-neural-networks.md): Toán tử tương quan chéo 2D, Receptive Field, tính bất biến tịnh tiến và bước đột phá Residual Highway.
 - [[unet-architecture]] — [Kiến trúc U-Net & Phân đoạn Ảnh](unet-architecture.md): Mô hình Encoder-Decoder đối xứng, kết nối tắt Concatenation bảo toàn vị trí điểm ảnh và hàm mất mát Dice Loss.
 - [[object-detection-yolo]] — [Phát hiện Vật thể & Dòng họ YOLO](object-detection-yolo.md): Single-stage regression, Anchor-free, FPN/PANet, phân tích IoU/mAP và kiến trúc NMS-free của YOLOv10.
 - [[vision-transformers]] — [Vision Transformers & Swin](vision-transformers.md): Chiếu Patch Embedding, giới hạn của Attention bậc hai và giải pháp cửa sổ dịch chuyển Shifted Windows tuyến tính.
 - [[inference-optimization-tensorrt]] — [Tối ưu hóa Suy luận & TensorRT](inference-optimization-tensorrt.md): Định dạng trung gian ONNX, hợp nhất tầng CBR Kernel Fusion và hiệu chuẩn lượng tử hóa INT8 KL-Divergence.
 - [[graph-neural-networks]] — [Mạng Nơ-ron Đồ thị (GNN)](graph-neural-networks.md): Khung truyền tin Message Passing, kiến trúc GCN/GAT, hiện tượng Over-smoothing và mở rộng qua GraphSAGE.
+- [[multi-label-classification]] — [Phân Loại Đa Nhãn & C2AE](multi-label-classification.md): So sánh Multi-class vs Multi-label, hạn chế Binary Relevance/Label Powerset, kiến trúc C2AE và Gram Matrix Loss.
 
 ### Miền 5: Machine Learning & Nền Tảng Toán Học (7 thực thể)
 - [[linear-regression-mle]] — [Hồi quy Tuyến tính & MLE](linear-regression-mle.md): Phương trình chuẩn tắc Normal Equation, chứng minh toán học sự tương đương giữa OLS và Maximum Likelihood với nhiễu Gaussian.
@@ -155,20 +165,24 @@ graph TD
 - [[principal-component-analysis]] — [Phân tích Thành phần Chính (PCA)](principal-component-analysis.md): Hai góc nhìn toán học (Tối đa hóa phương sai vs Tối thiểu hóa sai số tái tạo), phân rã SVD và Scree Plot.
 - [[model-selection-evaluation]] — [Chiến lược Lựa chọn Mô hình](model-selection-evaluation.md): K-Fold Cross-Validation, tiêu chuẩn AIC/BIC, phòng chống Data Leakage và bộ 3 triết lý chọn mô hình thực chiến.
 
-### Miền 6: MLOps & Kỹ Nghệ Sản Xuất (6 thực thể)
+### Miền 6: MLOps & Kỹ Nghệ Sản Xuất (8 thực thể)
 - [[mlops-lifecycle]] — [Vòng đời MLOps & Production Script](mlops-lifecycle.md): 3 cấp độ trưởng thành MLOps của Google, 6 bước refactor mã nguồn từ Jupyter Notebook sang Production Scripts.
 - [[experiment-tracking-model-registry]] — [Theo dõi Thử nghiệm & Registry](experiment-tracking-model-registry.md): Quản trị tham số, số liệu và artifacts qua MLflow/W&B; quy trình thăng hạng mô hình Staging sang Production.
 - [[model-serving-api]] — [Triển khai Dịch vụ API Mô hình](model-serving-api.md): Xây dựng API bất đồng bộ với FastAPI/Uvicorn, kiến trúc Dynamic Batching và phục vụ GPU thông lượng cao qua Triton.
 - [[containerization-kubernetes-ml]] — [Docker & Điều phối Kubernetes](containerization-kubernetes-ml.md): Kỹ thuật Multi-stage build rút gọn image, quản lý GPU Driver qua NVIDIA Operator và HPA theo dõi GPU.
 - [[continuous-integration-cd-ml]] — [CI/CD/CT cho Machine Learning](continuous-integration-cd-ml.md): Tự động hóa kiểm thử mã nguồn, dữ liệu và mô hình; các chiến lược phát hành Canary, Blue-Green và Shadow.
 - [[data-drift-model-monitoring]] — [Giám sát Dữ liệu & Trôi dạt Mô hình](data-drift-model-monitoring.md): Phân loại Data Drift vs Concept Drift, các phép kiểm định thống kê KS-Test, Population Stability Index (PSI).
+- [[docker-ai-inference-packaging]] — [Đóng gói Suy luận AI với Docker](docker-ai-inference-packaging.md): Linux Namespaces/Cgroups, Multi-stage build tối ưu PyTorch CPU 2.8GB, Named Volume và điều phối Compose.
+- [[fastapi-production-ml-serving]] — [Phục vụ Mô hình với FastAPI](fastapi-production-ml-serving.md): Clean Architecture 5 tầng, Lifespan context, chống Train/Serve skew, Pydantic validation và bẫy chặn Event Loop.
 
-### Miền 7: Kỹ Nghệ Phần Mềm & Hệ Thống Dữ Liệu (5 thực thể)
+### Miền 7: Kỹ Nghệ Phần Mềm & Hệ Thống Dữ Liệu (7 thực thể)
 - [[oop-core-principles]] — [4 Tính chất OOP & Vai trò Interface](oop-core-principles.md): Đóng gói, Trừu tượng, Kế thừa, Đa hình giải thích qua bài toán kỹ thuật thực tế; tại sao bắt buộc phải có Interface?
 - [[solid-principles]] — [5 Nguyên lý Thiết kế SOLID](solid-principles.md): SRP, OCP, LSP, ISP và trọng tâm Dependency Inversion (chữ D) giải thích bằng ví dụ kiến trúc AI Service/Repository.
 - [[database-indexing-optimization]] — [Chỉ mục DB & Tối ưu hóa Truy vấn](database-indexing-optimization.md): Cấu trúc B+Tree, phân tích EXPLAIN Execution Plan, giải quyết N+1 Query Problem, WHERE vs HAVING, TRUNCATE vs DELETE.
 - [[acid-and-transactions]] — [Giao dịch & Nguyên lý ACID](acid-and-transactions.md): 4 thuộc tính ACID, 4 cấp độ cô lập giao dịch ANSI, giải quyết tranh chấp đồng thời bằng Khóa bi quan vs Khóa lạc quan.
 - [[sql-vs-nosql-data-architecture]] — [Kiến trúc SQL, NoSQL & Lakehouse](sql-vs-nosql-data-architecture.md): Đối chiếu lưu trữ Dòng (Row-wise OLTP) vs Cột (Column-wise OLAP), Định lý CAP phân tán và kiến trúc Lakehouse.
+- [[modern-data-pipeline]] — [Data Pipeline & Medallion Architecture](modern-data-pipeline.md): Mô hình Kimball vs Inmon, Snowflake 3 tầng (Lưu trữ, Compute, Dịch vụ), CDC qua Streams & Tasks.
+- [[apache-iceberg]] — [Định dạng Bảng Mở Apache Iceberg](apache-iceberg.md): Cây Metadata phân tầng, Pruning 3 cấp độ, Hidden Partitioning, Schema Evolution qua Field IDs và Lakehouse lai.
 
 ---
 
@@ -176,6 +190,7 @@ graph TD
 
 - **A**:
   - [[acid-and-transactions]] — Giao dịch và Nguyên lý ACID trong Database.
+  - [[apache-iceberg]] — Định dạng bảng mở Apache Iceberg, Cắt tỉa 3 cấp độ và Hồ dữ liệu lai.
   - [[agentic-ai-core]] — Kiến trúc Cốt lõi của Agentic AI.
   - [[agent-memory-systems]] — Hệ thống Bộ nhớ của Tác nhân AI.
 - **B**:
@@ -187,9 +202,12 @@ graph TD
 - **D**:
   - [[database-indexing-optimization]] — Đánh chỉ mục Cơ sở dữ liệu và Tối ưu hóa Query SQL.
   - [[data-drift-model-monitoring]] — Giám sát Dữ liệu và Trôi dạt Mô hình (Data & Concept Drift).
+  - [[docker-ai-inference-packaging]] — Đóng gói suy luận AI với Docker và Docker Compose.
   - [[document-chunking]] — Các Chiến lược Phân đoạn Tài liệu trong RAG.
 - **E**:
   - [[experiment-tracking-model-registry]] — Theo dõi Thử nghiệm và Đăng ký Mô hình (MLflow).
+- **F**:
+  - [[fastapi-production-ml-serving]] — Triển khai phục vụ mô hình học máy chuyên nghiệp với FastAPI.
 - **G**:
   - [[gradient-vanishing-exploding]] — Vấn đề Triệt tiêu và Bùng nổ Gradient trong Mạng sâu.
   - [[graph-neural-networks]] — Mạng Nơ-ron Đồ thị (GNN, GCN, GAT).
@@ -210,7 +228,11 @@ graph TD
   - [[mlops-lifecycle]] — Vòng đời MLOps và Chuyển đổi Kịch bản Sản xuất.
   - [[model-selection-evaluation]] — Chiến lược Lựa chọn và Đánh giá Mô hình Học máy.
   - [[model-serving-api]] — Triển khai Mô hình thành Dịch vụ API (FastAPI, Triton).
+  - [[modern-data-pipeline]] — Kiến trúc Data Pipeline hiện đại, mô hình chiều Kimball và Medallion ELT.
+  - [[modular-rag-production]] — Kiến trúc Modular RAG và bộ rào chắn an toàn Production Guardrails.
+  - [[ms-swift-llm-finetuning]] — Tinh chỉnh mô hình ngôn ngữ lớn với framework MS-SWIFT.
   - [[multi-agent-collaboration]] — Hợp tác Đa tác nhân và Hệ thống Phối hợp.
+  - [[multi-label-classification]] — Phân loại đa nhãn và mạng Canonical Correlated AutoEncoder (C2AE).
 - **O**:
   - [[object-detection-yolo]] — Phát hiện Vật thể và Dòng họ YOLO (v1 đến v10).
   - [[oop-core-principles]] — 4 Tính chất Cốt lõi của OOP và Vai trò của Interface.
@@ -255,3 +277,8 @@ graph TD
 | **Graph Learning** | [Deep-Learning-on-Graphs.pdf](../resources/deep-learning/Deep-Learning-on-Graphs.pdf) (Cambridge) | `AIO2026_[Reading]-RAG-System.pdf` (Graph RAG sections) |
 | **MLOps** | Google Cloud MLOps Architecture Guidelines | `AIO2025_MLOps_CICD.pdf`, `Session 1` đến `Session 9` Bootcamp |
 | **Database Systems** | [Fundamentals of Database System.pdf](../resources/software/Fundamentals%20of%20Database%20System.pdf) | `DatabaseSQL.jpg`, `JavaOOP-Core.jpg`, `Questtion.txt` |
+| **Modern Lakehouse** | Snowflake Architecture & Apache Iceberg Spec | `AIO2026_[Reading]-Basic-Data-Pipeline.pdf`, `AIO2026_[Reading]-Modern-Data-Pipeline.pdf` |
+| **Multi-label CV** | Canonical Correlated AutoEncoder (C2AE) | `AIO2026_[Reading_v2]_Multi-label_Classification-C2AE.pdf` |
+| **LLM SFT & Tools** | MS-SWIFT Framework & Hugging Face AutoMap | `AIO2026_[Reading] - Fine_tuning_LLM_MS-SWIFT.pdf` |
+| **Modular RAG** | Modular RAG Pipeline Visualizer & Guardrails | `NLP, LLM, AI agent course.pdf`, `RAG_Technical_Documentation.pdf` |
+| **MLOps Serving** | Packaging AI Inference & Production Serving | `AIO2026_MLOps_[Reading1]-Docker.pdf`, `AIO2026_MLOps_[Reading2]-Docker.pdf`, `AIO2026_[Reading_v6]-FastAPI.pdf` |

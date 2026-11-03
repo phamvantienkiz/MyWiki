@@ -71,6 +71,7 @@ Một sai lầm kinh điển của kỹ sư Python khi viết API cho AI:
 
 ## 5. Mạng lưới Liên kết Tri thức (Knowledge Graph & `wiki-links`)
 - [[mlops-lifecycle]] — Giai đoạn biến đổi từ kịch bản sang dịch vụ API.
+- [[fastapi-production-ml-serving]] — Chi tiết kiến trúc 5 tầng, Lifespan, giải quyết Train/Serve skew và bẫy Event loop trong FastAPI.
 - [[inference-optimization-tensorrt]] — Nhân tính toán phía sau các Inference Server hiệu năng cao.
 - [[containerization-kubernetes-ml]] — Đóng gói API server vào Docker và scale trên Kubernetes.
 - [[continuous-integration-cd-ml]] — Chiến lược triển khai Blue-Green và Canary cho API.
