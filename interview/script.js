@@ -1,11 +1,11 @@
 /* ==========================================================================
-   BAHA HOMES - AI INTERN LECTURE VISUALIZER
+   ATIN - AI ENGINEER HANDBOOK & LECTURE VISUALIZER
    Interactive Engine & ScrollSpy Controller (Unified Sidebar Architecture)
    ========================================================================== */
 
 // 0. Dark Mode / Light Mode Theme Controller
 function initTheme() {
-    const savedTheme = localStorage.getItem('baha_interview_theme');
+    const savedTheme = localStorage.getItem('atin_interview_theme');
     const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     
     if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
@@ -17,7 +17,7 @@ function initTheme() {
     // Listen for system preference changes if user hasn't explicitly set a preference
     if (window.matchMedia) {
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            if (!localStorage.getItem('baha_interview_theme')) {
+            if (!localStorage.getItem('atin_interview_theme')) {
                 applyTheme(e.matches ? 'dark' : 'light');
             }
         });
@@ -49,7 +49,7 @@ function applyTheme(theme) {
 function toggleTheme() {
     const isDark = document.documentElement.classList.contains('dark');
     const newTheme = isDark ? 'light' : 'dark';
-    localStorage.setItem('baha_interview_theme', newTheme);
+    localStorage.setItem('atin_interview_theme', newTheme);
     applyTheme(newTheme);
 }
 
@@ -172,32 +172,32 @@ const simSteps = [
     {
         title: "Bước 1: Tiếp Nhận Yêu Cầu Của Kỹ Sư",
         badge: "USER_INPUT",
-        code: `[User Request]:\n"Hãy viết module đọc file bảng bóc tách vật tư căn 2PN Vinhomes Grand Park (BOM_vinhomes_2pn.xlsx), trích xuất mã gỗ An Cường và độ dày, tính tổng chi phí theo bảng giá kho xưởng hiện tại."`,
-        note: "Tác nhân nhận prompt có ngữ cảnh rõ ràng về loại căn hộ, tên file và mục tiêu kinh doanh."
+        code: `[User Request]:\n"Hãy viết module đọc RTSP stream từ camera cổng số 2 bến cảng, trích xuất biển số xe container bằng mô hình YOLOv10-ANPR và ghi nhận dạng vào PostgreSQL."`,
+        note: "Tác nhân nhận prompt có ngữ cảnh rõ ràng về nguồn RTSP camera, bài toán nhận dạng biển số và CSDL lưu trữ."
     },
     {
         title: "Bước 2: Phân Tích & Lập Kế Hoạch (System 2 CoT)",
         badge: "THOUGHT_DAG",
-        code: `[Agent Thought (System 2 CoT)]:\n1. Phân tích: Cần dùng thư viện pandas hoặc openpyxl để parse file Excel.\n2. Công cụ: Kiểm tra workspace xem file BOM có tồn tại không bằng tool list_directory.\n3. Rủi ro: Có thể thiếu thư viện pandas trong .venv -> Cần kiểm tra trước khi import.`,
-        note: "Tác nhân chia nhỏ bài toán thành DAG (Directed Acyclic Graph), lường trước rủi ro thiếu thư viện."
+        code: `[Agent Thought (System 2 CoT)]:\n1. Phân tích: Cần dùng OpenCV VideoCapture/bounded queue + ONNX Runtime/TensorRT để chạy suy luận không nghẽn frame.\n2. Công cụ: Kiểm tra workspace xem model weight anpr_yolov10.onnx có tồn tại không bằng tool list_directory.\n3. Rủi ro: Khung hình RTSP tích tụ trong bộ đệm gây trễ 3-5 giây -> Cần worker thread riêng biệt đọc frame.`,
+        note: "Tác nhân chia nhỏ bài toán thành DAG (Directed Acyclic Graph), lường trước rủi ro tràn buffer stream camera."
     },
     {
         title: "Bước 3: Thực Thi Công Cụ (Tool Execution)",
         badge: "TOOL_CALL",
-        code: `[Agent Action -> run_command]:\n$ uv run python -c "import pandas, openpyxl; print('Dependencies ready')"\n\n[Tool Result (STDERR)]:\nModuleNotFoundError: No module named 'openpyxl'`,
+        code: `[Agent Action -> run_command]:\n$ uv run python -c "import cv2, onnxruntime, asyncpg; print('Dependencies ready')"\n\n[Tool Result (STDERR)]:\nModuleNotFoundError: No module named 'onnxruntime'`,
         note: "Tác nhân kiểm tra môi trường trong .venv cục bộ, bắt được lỗi thiếu dependency thay vì hoảng loạn."
     },
     {
         title: "Bước 4: Tự Phản Biện & Sửa Lỗi Tức Thì (Self-Correction)",
         badge: "OBSERVATION & FIX",
-        code: `[Agent Observation & Self-Correction]:\n-> Phát hiện thiếu openpyxl. Tiến hành cài đặt cô lập:\n$ uv add openpyxl pandas\n-> Dependencies installed successfully.\n\n[Agent Code Generation]:\nTạo file 'app/services/bom_calculator.py' với async function và Pydantic V2 validation.`,
+        code: `[Agent Observation & Self-Correction]:\n-> Phát hiện thiếu onnxruntime. Tiến hành cài đặt cô lập:\n$ uv add onnxruntime-gpu asyncpg\n-> Dependencies installed successfully.\n\n[Agent Code Generation]:\nTạo file 'app/services/anpr_stream_service.py' với async lifespan, background threadpool và Pydantic V2 validation.`,
         note: "Tác nhân tự khắc phục lỗi môi trường theo quy tắc AGENTS.md, sinh code phân tầng Service rõ ràng."
     },
     {
         title: "Bước 5: Kiểm Thử & Nghiệm Thu Sản Phẩm (Final Delivery)",
         badge: "DELIVERABLE",
-        code: `[Agent Final Output]:\n✅ Đã trích xuất thành công 18 hạng mục gỗ An Cường MDF lõi xanh chống ẩm.\n💰 Tổng dự toán chi phí xưởng: 142.500.000 VNĐ.\n🛡️ Kiểm thử: 100% test case pass, không có dữ liệu null, xuất JSON chuẩn Schema cho n8n trigger.`,
-        note: "Hoàn thiện sản phẩm có kiểm thử (pytest pass 100%), bàn giao dữ liệu JSON có cấu trúc cho n8n webhook."
+        code: `[Agent Final Output]:\n✅ Đã nhận dạng thành công biển số 51C-892.44, mã container TGHU-948201.\n⚡ Độ trễ suy luận: 11.4ms (đạt chuẩn Real-Time 30 FPS trên NVIDIA GPU).\n🛡️ Kiểm thử: 100% test case pass, ghi log PostgreSQL thành công, trigger webhook báo động xe vi phạm.`,
+        note: "Hoàn thiện sản phẩm có kiểm thử (pytest pass 100%), bàn giao dữ liệu JSON có cấu trúc cho trung tâm điều hành IOC."
     }
 ];
 
@@ -239,11 +239,11 @@ function init3DScene() {
     if (typeof THREE === "undefined") {
         container.innerHTML = `
             <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; color:#94a3b8; text-align:center; padding:20px;">
-                <div style="font-size:2.2rem; margin-bottom:8px;">📐</div>
-                <strong style="color:#f8fafc; font-size:1.15rem;">Bản Vẽ Kiến Trúc Mặt Bằng Căn Hộ Vinhomes Grand Park</strong>
-                <p style="max-width:520px; margin-top:8px; font-size:0.9rem; line-height:1.6;">Phòng khách Studio 32m²: Sàn gỗ MDF An Cường lõi xanh 12mm • Sofa văng bọc nỉ 1.8m • Bàn trà thông minh tròn • Cửa sổ kính Low-E view công viên 36ha.</p>
+                <div style="font-size:2.2rem; margin-bottom:8px;">🛰️</div>
+                <strong style="color:#f8fafc; font-size:1.15rem;">Mô Hình Không Gian Giám Sát Cảng Biển & Giao Thông ATIN IOC</strong>
+                <p style="max-width:520px; margin-top:8px; font-size:0.9rem; line-height:1.6;">Trung tâm chỉ huy thông minh ATIN: Luồng RTSP đa camera • Khu vực xếp dỡ container • Làn xe ANPR tự động • Cảm biến AI phân tích lưu lượng thời gian thực.</p>
                 <div style="margin-top:14px; font-family:var(--font-mono); font-size:0.82rem; background:rgba(255,255,255,0.08); padding:8px 16px; border-radius:6px;">
-                    Spatial AI Nodes: [Sofa: (0, 0.3, 0.5)] • [Table: (0, 0.2, 2.2)] • [Window: (0, 2.3, -3.9)]
+                    Spatial AI Nodes: [Camera Cổng 1: (0, 4.5, 8.0)] • [Container Stacking: (12, 6.0, -4.0)] • [ANPR Lane: (0, 0.5, 2.0)]
                 </div>
             </div>
         `;
@@ -414,27 +414,33 @@ function toggle3DStyle() {
 }
 
 /* --------------------------------------------------------------------------
-   5. Automation ROI Calculator
+   5. CV Inference Throughput & GPU Hardware Sizing Calculator
    -------------------------------------------------------------------------- */
 function updateROICalc() {
-    const slider = document.getElementById('leads-slider');
+    const slider = document.getElementById('cams-slider') || document.getElementById('leads-slider');
     if (!slider) return;
-    const leads = parseInt(slider.value, 10);
+    const cams = parseInt(slider.value, 10);
     
-    const leadsVal = document.getElementById('leads-val');
-    const hoursSaved = document.getElementById('hours-saved');
-    const moneySaved = document.getElementById('money-saved');
+    const camsVal = document.getElementById('cams-val') || document.getElementById('leads-val');
+    const totalFpsEl = document.getElementById('total-fps') || document.getElementById('hours-saved');
+    const vramNeededEl = document.getElementById('vram-needed') || document.getElementById('money-saved');
+    const gpuRecEl = document.getElementById('gpu-recommended');
 
-    if (leadsVal) leadsVal.innerText = `${leads} leads`;
+    if (camsVal) camsVal.innerText = `${cams} luồng`;
 
-    // 1 lead tư vấn & bóc tách thủ công mất 2.5 giờ
-    // Dùng AI Agent & Automation n8n giảm còn 0.5 giờ => Tiết kiệm 2.0 giờ / lead
-    const hours = leads * 2.5;
-    // Chi phí định mức nhân sự kỹ sư ~ 120.000 VNĐ/giờ
-    const money = Math.round((hours * 120000) / 1000000);
+    // Mỗi luồng camera RTSP chuẩn 15 FPS xử lý AI
+    const totalFps = cams * 15;
+    // VRAM: 1.8GB base TensorRT YOLOv10/DeepSORT + 450MB frame decoding buffer cho mỗi camera
+    const vramGB = ((1800 + cams * 450) / 1024).toFixed(1);
 
-    if (hoursSaved) hoursSaved.innerText = hours.toLocaleString('vi-VN');
-    if (moneySaved) moneySaved.innerText = money.toLocaleString('vi-VN');
+    if (totalFpsEl) totalFpsEl.innerText = totalFps.toLocaleString('vi-VN');
+    if (vramNeededEl) vramNeededEl.innerText = `${vramGB} GB`;
+    if (gpuRecEl) {
+        if (cams <= 8) gpuRecEl.innerText = "1x RTX 4060 Ti (16GB)";
+        else if (cams <= 24) gpuRecEl.innerText = "1x RTX 4090 (24GB)";
+        else if (cams <= 48) gpuRecEl.innerText = "2x RTX 4090 / 2x A10";
+        else gpuRecEl.innerText = "4x NVIDIA T4 / 2x L40S";
+    }
 }
 
 /* --------------------------------------------------------------------------
@@ -462,7 +468,7 @@ function updateScore() {
         } else if (pct < 80) {
             feedback.innerHTML = `📈 <strong>Mức độ khá (${pct}%):</strong> Bạn đã sẵn sàng cho 70% các câu hỏi kỹ thuật. Hãy luyện tập thêm 15 kịch bản phỏng vấn bên dưới để tự tin tuyệt đối.`;
         } else {
-            feedback.innerHTML = `🔥 <strong>Sẵn sàng chinh phục (${pct}%):</strong> Bạn sở hữu tư duy hoàn hảo của một Builder/Doer thực thụ. Bạn sẵn sàng ghi điểm tuyệt đối trước ban giám đốc BAHA Homes!`;
+            feedback.innerHTML = `🔥 <strong>Sẵn sàng chinh phục (${pct}%):</strong> Bạn sở hữu tư duy hoàn hảo của một AI Engineer thực thụ. Bạn sẵn sàng ghi điểm tuyệt đối trước hội đồng phỏng vấn ATIN!`;
         }
     }
 }
