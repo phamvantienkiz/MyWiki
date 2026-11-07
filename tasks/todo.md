@@ -78,3 +78,51 @@
   - [x] Cập nhật tài liệu quy hoạch `docs/plan/01_design_system_spec.md`, `docs/plan/00_master_plan.md` & tạo chuyên đề `docs/plan/06_dark_mode_design_system.md` <!-- id: 13.8.5 -->
 - [x] Bổ sung cẩm nang sử dụng chi tiết Google Antigravity Desktop (App 2.0) từ tài liệu chính thức `https://antigravity.google/docs/getting-started/` (Hệ thống Slash Commands `/plan`, `/goal`, `/schedule`, `/grill-me`, cơ chế cô lập Git Worktree Mode, bảng phím tắt điều hướng, phân quyền bảo tầng và kịch bản thực chiến BAHA Homes) <!-- id: 13.9 -->
 - [x] Tích hợp cẩm nang chuyên sâu Antigravity Python SDK (`google-antigravity`) & Ma trận hiệp đồng 4 bề mặt từ `https://antigravity.google/docs/sdk/overview/` (Async context manager, streaming đa kênh, custom tools & subagents, declarative policies, session persistence và ví dụ microservice FastAPI) <!-- id: 13.10 -->
+
+---
+
+## Phần 4: Nâng Cấp Toàn Diện Kiến Thức Machine Learning & Deep Learning Computer Vision (`interview/`)
+
+- [x] Module 02: Tích hợp trọn bộ Thuật toán Machine Learning Cổ điển & Tối ưu hóa <!-- id: 14.1 -->
+  - [x] Linear Regression, Logistic Regression, Perceptron, SVM, Decision Tree, Random Forest, XGBoost, PCA <!-- id: 14.1.1 -->
+  - [x] Bias - Underfitting - Variance - Overfitting Tradeoff & Learning Curves <!-- id: 14.1.2 -->
+  - [x] Thuật toán tối ưu hóa (Optimizers): SGD, Momentum, NAG, AdaGrad, RMSprop, Adam, AdamW <!-- id: 14.1.3 -->
+  - [x] Mạng nơ-ron đa tầng MLP: Fully Connected / Dense Layer, Forward Prop, Loss Functions, Backprop, Chain Rule & Parameter Update ($\mathbf{W} \leftarrow \mathbf{W} - \eta \nabla_{\mathbf{W}}\mathcal{L}$) kèm vết dò số học Toy Network 2 tầng <!-- id: 14.1.4 -->
+- [x] Module 03: Tích hợp trọn bộ Kiến trúc Deep Learning Thị Giác Máy Tính (Computer Vision) chuẩn `lecture-visualizer` <!-- id: 14.2 -->
+  - [x] 3.3 Mạng Tích Chập (CNNs): Kernels, Filter size, Stride, Padding (Valid vs Same), Channels ($C_{in}, C_{out}$), Convolution on Volume, Output size formula, Local Connectivity & Parameter Sharing, Vết dò số học $4 \times 4$ với kernel $3 \times 3$ <!-- id: 14.2.1 -->
+  - [x] 3.4 Pooling Layer & Receptive Field vs ERF: Max Pooling, Avg Pooling, Global Avg Pooling (GAP), công thức Receptive Field lý thuyết, bản chất phân phối chuẩn Gauss 2D của Effective Receptive Field (ERF) <!-- id: 14.2.2 -->
+  - [x] 3.5 Internal Covariate Shift & Batch Normalization: Tại sao Normalization làm mịn Loss Landscape, BN Training phase vs BN Inference phase, kỹ thuật gập trọng số (Folding BN into Conv) cho deploy biên; Bảng đối chiếu Bộ Tứ Chuẩn Hóa qua tensor $(N, C, H, W)$ giữa BN, LN, IN, GN <!-- id: 14.2.3 -->
+  - [x] 3.6 Inverted Dropout & Triệt Tiêu Gradient: Chuẩn công nghiệp Inverted Dropout (chia bù $1-p$ trong training, zero overhead khi inference); Phân tích tích chuỗi đạo hàm Triệt tiêu / Bùng nổ Gradient và 4 giải pháp phòng thủ (ReLU, He Init, Normalization, Gradient Clipping) <!-- id: 14.2.4 -->
+  - [x] 3.7 Kiến Trúc Đột Phá ResNet & U-Net: Suy thoái (Degradation), Residual Block $F(x)+x$, chứng minh toán học đạo hàm số hạng $+1$ mở đường cao tốc gradient không bao giờ tắt; Kiến trúc chữ U U-Net (Encoder-Decoder), khác biệt mấu chốt giữa Skip-Connection của ResNet (phép cộng) và U-Net (ghép nối kênh Concat), hàm mất mát kết hợp Combo Loss (BCE + Dice) <!-- id: 14.2.5 -->
+  - [x] 3.8 Transfer Learning, Fine-Tuning & Data Augmentation: 3 cấp độ (Feature Extraction, Partial Fine-Tuning, Full Fine-Tuning + Warmup LR); Tăng cường hình học, quang học, và kỹ thuật nâng cao SOTA (Cutout, Mixup, CutMix, Mosaic YOLO) <!-- id: 14.2.6 -->
+  - [x] 3.9 MobileNet Edge & Vision Transformers: Depthwise Separable Conv ($DW + PW$) giảm ~9 lần FLOPs; ViT Patch extraction $16 \times 16$ vs Swin Transformer Shifted Windows ($O(M^2 N)$); Bảng so sánh 1-1 CNNs vs ViT vs Swin Transformer <!-- id: 14.2.7 -->
+- [x] Hoàn thiện kế hoạch & báo cáo tổng kết trong `docs/ai/deep_learning_cv_plan.md` và `docs/ai/deep_learning_cv_walkthrough.md` <!-- id: 14.3 -->
+- [x] Đóng gói toàn bộ các Sơ Đồ Kiến Trúc theo tiêu chuẩn `diagram-design` (Container Frames, Eyebrow Tags on Mask, Orthogonal Connectors, No Markdown/ASCII): ResNet Residual Block, U-Net, MobileNet Separable Conv, ViT vs Swin, Đại Pipeline 1 (Traffic), Đại Pipeline 2 (Smart Port), Đại Pipeline 3 (Face Access), C2AE Multi-label, Agent Harness 9 Thành phần, và Clean Architecture Củ hành <!-- id: 14.4 -->
+
+---
+
+## Phần 5: Rà Soát & Chuẩn Hóa Hệ Thống Màu Sắc Light / Dark Mode (`interview/`)
+
+- [x] Rà soát và giải quyết triệt để lỗi xung đột màu ("trùng màu", chữ chìm vào nền) <!-- id: 15.1 -->
+  - [x] Bổ sung biến màu ngữ nghĩa cốt lõi `--bg-primary`, `--bg-surface`, `--bg-main`, `--border`, `--data-rose` vào `:root` và `html.dark, body.dark` <!-- id: 15.1.1 -->
+  - [x] Thiết lập hệ thống `--tint-*-bg`, `--tint-*-border`, `--tint-*-text` đa tầng (Blue, Emerald, Purple, Amber, Red, Neutral) thích ứng liền mạch cả Light Mode (màu pastel nhã nhặn) và Dark Mode (độ mờ trong suốt alpha 0.16) <!-- id: 15.1.2 -->
+  - [x] Khử sạch 100% (72/72) mã màu hex pastel cứng (`#eff6ff`, `#ecfdf5`, `#fdf4ff`, `#fffbeb`, `#fef2f2`, `#f8fafc`) trong tất cả SVG diagrams và thay thế bằng các biến CSS semantic <!-- id: 15.1.3 -->
+  - [x] Khử sạch các mã màu chữ tối tương phản kém trên nền tối (`#047857`, `#b45309`, `#dc2626`, `#d97706`) và mã màu trắng trên nền sáng (`#fff` trên nền pastel) <!-- id: 15.1.4 -->
+  - [x] Cập nhật bộ mô phỏng JavaScript `updateBVSim(p)` sang sử dụng token màu theme-aware <!-- id: 15.1.5 -->
+  - [x] Đảm bảo đạt chuẩn tương phản WCAG AA, giữ phong cách thanh lịch, tối giản, không gây chói mắt <!-- id: 15.1.6 -->
+
+---
+
+## Phần 6: Nghiên Cứu Chuyên Sâu Doanh Nghiệp ATIN & Chuẩn Bị Gặp Gỡ Lead Tech (`interview/`)
+
+- [x] Khai thác & Thu thập dữ liệu toàn diện về ATIN (`https://atin.com.vn/vi/`) <!-- id: 16.1 -->
+  - [x] Hồ sơ pháp nhân, lãnh đạo (CEO Lê Anh Tuấn), ngày thành lập (19/06/2019), trụ sở Phùng Khoang, hotline, email <!-- id: 16.1.1 -->
+  - [x] 11 Ngành dọc kinh doanh & Danh mục 30+ module Video Analytics AI <!-- id: 16.1.2 -->
+  - [x] Danh sách 70+ dự án thực tế tiêu biểu: BSR Lọc hóa dầu Bình Sơn, Công an Yên Bái, Lào Cai, Cố đô Huế, Sunworld, Chùa Tam Chúc, Dewey Schools <!-- id: 16.1.3 -->
+  - [x] Đối tác chiến lược Network Optix (Nx Witness VMS) - Tích hợp Nx Meta Plugin, ứng dụng di động Heza & Agent AI <!-- id: 16.1.4 -->
+- [x] Xuất báo cáo nghiên cứu tình báo doanh nghiệp & chiến lược vào `docs/ai/atin_company_intelligence_and_techlead_strategy.md` <!-- id: 16.2 -->
+- [x] Cập nhật giao diện cẩm nang `interview/index.html` <!-- id: 16.3 -->
+  - [x] Cập nhật Sidebar Navigation (mục 1.1 và 1.5) <!-- id: 16.3.1 -->
+  - [x] Tối ưu hóa Section 1.1: Bổ sung hồ sơ xác thực và Bản đồ 70+ Dự án thực địa tiêu biểu <!-- id: 16.3.2 -->
+  - [x] Bổ sung Section 1.5: Chiến lược gặp gỡ Tech Lead ATIN, Khung tâm thế trao đổi, Tinh thần học hỏi & 5 Ý tưởng đột phá bám sát bài toán kinh doanh <!-- id: 16.3.3 -->
+  - [x] Bộ 4 câu hỏi chiến lược đặt ngược lại cho Tech Lead để khẳng định đẳng cấp senior <!-- id: 16.3.4 -->

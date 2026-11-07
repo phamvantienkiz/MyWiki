@@ -168,3 +168,69 @@ Tài liệu này tổng kết các bài học kinh nghiệm thu được từ qu
 
 
 
+
+
+---
+
+## 11. Đóng Gói Sơ Đồ Kiến Trúc Trực Quan Theo Skill `diagram-design` (Thay Thế Markdown / ASCII Art)
+
+### Vấn Đề Khi Dùng Sơ Đồ Markdown / ASCII Art Trong Hệ Thống Tài Liệu Kỹ Thuật
+- Các khối sơ đồ viết dạng ASCII art (`<pre><code>┌───`) hoặc luồng mũi tên text (`X ──> Y ──> Z`) rất dễ bị vỡ bố cục trên màn hình nhỏ, khó đọc trên thiết bị di động, không thể hiện được tính phân tầng kiến trúc (Tiers / Trust Boundaries / Sub-systems) và thiếu tính chuyên nghiệp.
+- Khi sử dụng SVG sơ sài thiếu vùng đóng gói, các thành phần trôi nổi rời rạc, không phản ánh rõ ranh giới xử lý của từng hệ thống con.
+
+### Giải Pháp Đóng Gói Kiến Trúc (Architecture Zone Packaging):
+1. **Khung bao phân vùng (Zone Boundary Frames):**
+   - Đóng gói các cụm thành phần có cùng chức năng vào trong một khung container hình chữ nhật viền 1px (`stroke="var(--border)"`), bo góc tròn chuẩn `rx="8"`, nền rửa nhẹ 2% (`fill="rgba(45,49,66,0.02)"`).
+   - Mỗi khung mang một thẻ tiêu đề định danh (Eyebrow Tag) đặt trên một mask nền màu trang (`rx="2"` hoặc `rx="3"`), cách cạnh trên 12-16px.
+2. **Khối thành phần con (Component Sub-Blocks):**
+   - Bo góc `rx="6"`, hairline border 1px, phân cấp kiểu chữ: Tên thành phần in đậm (11–12px), dòng mô tả kỹ thuật kiểu monospace hoặc chữ phụ (8.5–10px).
+3. **Quy tắc kết nối trực giao (Orthogonal Routing):**
+   - Không dùng đường chéo xiên xẹo (`no diagonal slants`). Mọi kết nối chuyển hướng đều gập góc vuông bo tròn bán kính $r=8\text{px}$ (`path ... Q mid,y mid,y+8`).
+   - Sử dụng mũi tên marker chuẩn trong `<defs>`, nhãn chú thích trên đường mũi tên luôn có mask nền che nét vẽ bên dưới.
+4. **Điểm nhấn biên tập (Editorial Focal Accent):**
+   - Không tô màu sặc sỡ lên toàn bộ các hộp. Chỉ sử dụng 1–2 màu điểm nhấn biên tập (ví dụ: `var(--data-emerald)` cho đường cao tốc Identity Shortcut của ResNet, hoặc `var(--data-blue)` cho nhánh xử lý chính). Toàn bộ hạ tầng và khung còn lại giữ tông màu trung tính trang nhã.
+5. **Chống tràn màn hình điện thoại:**
+   - Luôn bao bọc SVG trong thẻ `<div style="overflow-x: auto; width: 100%; margin: 12px 0;">` với thuộc tính `style="min-width: ...px; max-width: ...px;"` khớp với `viewBox`. Điều này ngăn ngừa trình duyệt co dúm chữ hoặc làm tràn trang trên màn hình hẹp.
+
+---
+
+## 12. Bài Học Rà Soát & Khắc Phục Xung Đột Màu Nền / Màu Chữ (Color Contrast Ergonomics)
+
+### Nguyên Nhân Gốc Rễ Gây Hiện Tượng "Trùng Màu" (Invisible Text / Low Contrast)
+1. **Thiếu biến CSS ngữ nghĩa trong Chế độ Tối (Missing Semantic Token Mappings):**
+   - Trong quá trình phát triển, các biến mới như `--bg-primary`, `--bg-surface`, `--bg-main`, `--border` có thể được dùng rải rác nhưng chưa được khai báo ở `:root` hoặc chưa được gán giá trị tương ứng ở `html.dark, body.dark`.
+   - Trình duyệt khi gặp biến không tồn tại sẽ coi như rỗng/trong suốt, làm cho nền container hòa vào nền cha, khiến chữ bên trong dường như "chìm" hoàn toàn.
+2. **Sử dụng mã màu Hex Pastel cố định trong thẻ SVG (`#eff6ff`, `#ecfdf5`, `#fdf4ff`, `#fef2f2`, `#fffbeb`):**
+   - Ở Light Mode, các màu pastel này hiển thị rất đẹp trên nền trắng.
+   - Nhưng khi chuyển sang Dark Mode, biến `--text-primary` chuyển thành màu trắng sáng (`#F1F5F9`). Chữ trắng đặt trên các hộp pastel sáng (`#eff6ff`) sẽ biến mất hoàn toàn do tỷ lệ tương phản sụt giảm nghiêm trọng (< 1.2:1).
+3. **Màu chữ đậm cố định (`#047857`, `#b45309`, `#dc2626`):**
+   - Các màu chữ này ở Light Mode có độ tương phản cao, nhưng khi sang Dark Mode, nền thẻ chuyển sang màu tối (`#131B2E`), khiến chữ đậm trở nên gần như vô hình.
+
+### Giải Pháp Kiến Trúc Token 2 Chiều Chuẩn Mực
+1. **Hệ thống Token Tint Bán Trong Suốt Cho Dark Mode (`--tint-*-bg`):**
+   - Thay vì dùng màu pastel đục, ở Dark Mode ta sử dụng màu sắc thuần khiết có độ mờ thấp: `rgba(..., 0.16)` (ví dụ: `rgba(37, 99, 235, 0.16)` cho Blue, `rgba(5, 150, 105, 0.16)` cho Emerald).
+   - Nền này cho phép màu nền tối của Card thấm qua, đồng thời tạo ra một ánh màu nhẹ nhàng, thanh lịch, làm nền tảng tương phản tuyệt vời với chữ trắng/sáng (`#F1F5F9`, `#93C5FD`, `#6EE7B7`).
+2. **Loại bỏ 100% hardcoded hex trong toàn bộ SVG:**
+   - Thay thế toàn bộ các thuộc tính `fill="#..."` bằng `fill="var(--tint-*-bg)"`, `fill="var(--data-*)"` hoặc `fill="var(--text-primary)"`.
+   - Đối với các phần tử đảo ngược như nhãn "Mask" trong Cutout, sử dụng `fill="var(--text-primary)"` cho hộp và `fill="var(--bg-primary)"` cho chữ, bảo đảm tỷ lệ tương phản luôn đạt chuẩn WCAG AA (> 4.5:1) ở cả hai chế độ.
+3. **Thanh Lịch & Tối Giản (Calm Aesthetics):**
+   - Không sử dụng màu neon hay độ bão hòa quá cao. Duy trì cảm giác dễ chịu, trung tính, tập trung hoàn toàn vào nội dung kiến thức chuyên sâu.
+
+---
+
+## 13. Chiến Lược Tiếp Cận Tech Lead & Đề Xuất Giải Pháp AI Gắn Liền Bài Toán Doanh Nghiệp (ATIN Case Study)
+
+### 1. Chuyển Dịch Tâm Thế: Từ "Ứng Viên Bị Phỏng Vấn" Sang "Solution Partner Đồng Hành"
+- Tech Lead tại các công ty chuyên triển khai sản phẩm thực địa (như ATIN với 70+ dự án camera an ninh, IOC, cảng biển) không quan tâm nhiều đến các demo đồ chơi chạy trên Jupyter Notebook hay chỉ số accuracy trên tập dữ liệu sạch.
+- Họ chịu áp lực trực tiếp về: chi phí phần cứng biên (Edge Budget), tắc nghẽn băng thông luồng video RTSP hàng chục camera, và tính ổn định 24/7 khi thời tiết thay đổi (Domain Shift).
+- Ứng viên cần tiếp cận với tâm thế của một kỹ sư giải pháp: hiểu nỗi đau thực tế của khách hàng của họ, nói ngôn ngữ của hệ thống production (FPS, Latency SLA, VRAM footprint, ONNX, TensorRT INT8, Network Backpressure).
+
+### 2. Nắm Rõ Hệ Sinh Thái Khách Hàng & Nền Tảng Đối Tác (Domain Grounding)
+- Việc chủ động tìm hiểu trước và gọi đúng tên khách hàng thực tế (ví dụ: BSR Dung Quất, Công an Yên Bái, Lào Cai, Cố đô Huế, Sunworld, Dewey Schools) chứng minh tính chuyên nghiệp và sự nghiêm túc vượt bậc.
+- Khi biết công ty là đối tác công nghệ của Network Optix (Nx Witness VMS), việc đề xuất tối ưu hóa thông qua Nx Meta Plugin thay vì xây dựng lại hệ thống VMS từ đầu thể hiện sự thấu hiểu sâu sắc về kiến trúc phần mềm doanh nghiệp.
+
+### 3. Công Thức Đề Xuất Idea Thuyết Phục (Pain Point → Technical Architecture → Business Value)
+- Mỗi ý tưởng kỹ thuật phải gắn liền với giá trị kinh tế cụ thể:
+  - *Two-tier cascade inference*: Lọc frame tại camera giúp tiết kiệm 70% băng thông và giảm 4x chi phí mua card GPU server → Giúp công ty chào thầu giá cạnh tranh hơn.
+  - *Multimodal Video Search (VLM)*: Giúp cán bộ công an tìm kiếm nghi can bằng ngôn ngữ tự nhiên tiếng Việt → Tạo tính năng độc quyền giúp thắng các gói thầu Smart City.
+  - *Active Learning & Uncertainty Sampling*: Tự động thu thập mẫu khó tại hiện trường → Giảm 80% chi phí gán nhãn thủ công và đẩy nhanh tốc độ thích ứng mô hình.
