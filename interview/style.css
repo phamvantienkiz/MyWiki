@@ -112,6 +112,37 @@
     --border-card: #E2E6EA;
     --border-highlight: var(--blue-200);
 
+    /* Aliases & Shared Variables */
+    --bg-primary: var(--bg-card);
+    --bg-surface: var(--bg-subtle);
+    --bg-main: var(--bg-page);
+    --border: var(--border-card);
+    --data-rose: #E11D48;
+
+    /* Semantic Container & Node Tints (Light Mode) */
+    --tint-blue-bg: #EFF6FF;
+    --tint-blue-border: #BFDBFE;
+    --tint-blue-text: var(--blue-700);
+
+    --tint-emerald-bg: #ECFDF5;
+    --tint-emerald-border: #A7F3D0;
+    --tint-emerald-text: var(--emerald-800);
+
+    --tint-purple-bg: #F5F3FF;
+    --tint-purple-border: #DDD6FE;
+    --tint-purple-text: var(--purple-800);
+
+    --tint-amber-bg: #FFFBEB;
+    --tint-amber-border: #FDE68A;
+    --tint-amber-text: var(--amber-800);
+
+    --tint-red-bg: #FEF2F2;
+    --tint-red-border: #FECACA;
+    --tint-red-text: var(--red-800);
+
+    --tint-neutral-bg: #F8FAFC;
+    --tint-neutral-border: var(--border-card);
+
     /* Typography & Ink */
     --text-primary: var(--slate-900);
     --text-body: var(--slate-700);
@@ -233,6 +264,37 @@ body.dark {
     --border-hairline: rgba(255, 255, 255, 0.07);
     --border-card: rgba(255, 255, 255, 0.11);
     --border-highlight: rgba(96, 165, 250, 0.35);
+
+    /* Aliases & Shared Variables (Dark Mode) */
+    --bg-primary: var(--bg-card);      /* #131B2E */
+    --bg-surface: var(--bg-subtle);    /* #1C263B */
+    --bg-main: var(--bg-page);         /* #0B0F17 */
+    --border: var(--border-card);       /* rgba(255, 255, 255, 0.11) */
+    --data-rose: #FB7185;
+
+    /* Semantic Container & Node Tints (Dark Mode - Tuned for Comfort & Zero Clashing) */
+    --tint-blue-bg: rgba(37, 99, 235, 0.16);
+    --tint-blue-border: rgba(96, 165, 250, 0.35);
+    --tint-blue-text: #93C5FD;
+
+    --tint-emerald-bg: rgba(5, 150, 105, 0.16);
+    --tint-emerald-border: rgba(52, 211, 153, 0.35);
+    --tint-emerald-text: #6EE7B7;
+
+    --tint-purple-bg: rgba(124, 58, 237, 0.16);
+    --tint-purple-border: rgba(167, 139, 250, 0.35);
+    --tint-purple-text: #C4B5FD;
+
+    --tint-amber-bg: rgba(217, 119, 6, 0.16);
+    --tint-amber-border: rgba(251, 191, 36, 0.35);
+    --tint-amber-text: #FCD34D;
+
+    --tint-red-bg: rgba(220, 38, 38, 0.16);
+    --tint-red-border: rgba(248, 113, 113, 0.35);
+    --tint-red-text: #FCA5A5;
+
+    --tint-neutral-bg: rgba(255, 255, 255, 0.03);
+    --tint-neutral-border: rgba(255, 255, 255, 0.10);
 
     /* Contrast-Safe Typography (WCAG AA Compliance) */
     --text-primary: #F1F5F9;         /* Slate 100 - Crisp, clear, zero-glare */
@@ -1159,3 +1221,32 @@ details.qa-card[open] summary.qa-header {
         display: none;
     }
 }
+
+/* --------------------------------------------------------------------------
+   Machine Learning Interactive Playground (Module 02.16)
+   -------------------------------------------------------------------------- */
+.ml-tab-btn {
+    transition: all 0.2s ease;
+    font-size: 0.88rem;
+}
+
+.ml-tab-btn:hover {
+    border-color: var(--primary) !important;
+    transform: translateY(-1px);
+}
+
+.ml-tab-content {
+    animation: fadeInTab 0.25s ease-in-out;
+}
+
+@keyframes fadeInTab {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+

@@ -77,6 +77,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 6. Mobile Drawer Toggle
     initMobileDrawer();
+
+    // 7. Machine Learning Interactive Playground
+    initMLPlayground();
 });
 
 /* --------------------------------------------------------------------------
@@ -472,3 +475,192 @@ function updateScore() {
         }
     }
 }
+
+/* --------------------------------------------------------------------------
+   7. Machine Learning Interactive Playground (Module 02.16)
+   -------------------------------------------------------------------------- */
+function initMLPlayground() {
+    updateBVSim(3);
+    updateTreeSim();
+    updatePCASim();
+    updateLogisticSim(0);
+}
+
+function switchMLTab(tabId) {
+    const tabs = document.querySelectorAll('.ml-tab-content');
+    const btns = document.querySelectorAll('.ml-tab-btn');
+    
+    tabs.forEach(tab => {
+        tab.style.display = (tab.id === tabId) ? 'block' : 'none';
+    });
+    
+    btns.forEach(btn => {
+        const onclickAttr = btn.getAttribute('onclick') || '';
+        const isActive = onclickAttr.includes(tabId);
+        btn.classList.toggle('active', isActive);
+        if (isActive) {
+            btn.style.background = 'var(--primary)';
+            btn.style.color = '#FFFFFF';
+            btn.style.borderColor = 'var(--primary)';
+        } else {
+            btn.style.background = 'var(--bg-surface)';
+            btn.style.color = 'var(--text-primary)';
+            btn.style.borderColor = 'var(--border)';
+        }
+    });
+}
+
+function updateBVSim(p) {
+    p = parseInt(p, 10);
+    const degreeEl = document.getElementById('bv-degree-val');
+    const biasEl = document.getElementById('bv-bias-val');
+    const varEl = document.getElementById('bv-var-val');
+    const mseEl = document.getElementById('bv-mse-val');
+    const statusBox = document.getElementById('bv-status-box');
+
+    if (degreeEl) degreeEl.innerText = p;
+
+    const sigma2 = 1.0;
+    const bias2 = +(4.0 / Math.pow(p, 1.4)).toFixed(2);
+    const variance = +(0.05 * Math.pow(p, 2.1)).toFixed(2);
+    const totalMSE = +(bias2 + variance + sigma2).toFixed(2);
+
+    if (biasEl) biasEl.innerText = bias2.toFixed(2);
+    if (varEl) varEl.innerText = variance.toFixed(2);
+    if (mseEl) mseEl.innerText = totalMSE.toFixed(2);
+
+    if (statusBox) {
+        if (p <= 2) {
+            statusBox.style.background = 'var(--tint-blue-bg)';
+            statusBox.style.color = 'var(--tint-blue-text)';
+            statusBox.style.borderColor = 'var(--tint-blue-border)';
+            statusBox.innerHTML = `⚠️ <strong>Trạng thái: Underfitting (High Bias)!</strong> Bậc p=${p} quá cứng nhắc, mô hình chưa nắm bắt được đường cong tự nhiên. Cần tăng bậc đa thức hoặc bổ sung đặc trưng.`;
+        } else if (p === 3 || p === 4) {
+            statusBox.style.background = 'var(--tint-emerald-bg)';
+            statusBox.style.color = 'var(--tint-emerald-text)';
+            statusBox.style.borderColor = 'var(--tint-emerald-border)';
+            statusBox.innerHTML = `✨ <strong>Trạng thái: Sweet Spot (Điểm cân bằng tối ưu)!</strong> Bậc p=${p} đạt tổng sai số MSE = ${totalMSE} thấp nhất. Khớp hoàn hảo cả tập huấn luyện và dữ liệu thực tế!`;
+        } else {
+            statusBox.style.background = 'var(--tint-red-bg)';
+            statusBox.style.color = 'var(--tint-red-text)';
+            statusBox.style.borderColor = 'var(--tint-red-border)';
+            statusBox.innerHTML = `💥 <strong>Trạng thái: Overfitting (High Variance / Hiện tượng Runge)!</strong> Bậc p=${p} quá cao khiến đường cong dao động dữ dội ở biên. Variance vọt lên ${variance}. Bắt buộc thêm điều chuẩn Ridge/Lasso!`;
+        }
+    }
+}
+
+function updateTreeSim() {
+    const n1 = parseInt(document.getElementById('tree-n1-slider')?.value || 10, 10);
+    const n0 = parseInt(document.getElementById('tree-n0-slider')?.value || 10, 10);
+
+    const n1El = document.getElementById('tree-n1-val');
+    const n0El = document.getElementById('tree-n0-val');
+    const entEl = document.getElementById('tree-entropy-val');
+    const giniEl = document.getElementById('tree-gini-val');
+    const barEl = document.getElementById('tree-purity-bar');
+    const pctEl = document.getElementById('tree-purity-pct');
+
+    if (n1El) n1El.innerText = n1;
+    if (n0El) n0El.innerText = n0;
+
+    const total = n1 + n0;
+    if (total === 0) return;
+
+    const p1 = n1 / total;
+    const p0 = n0 / total;
+
+    let entropy = 0;
+    if (p1 > 0) entropy -= p1 * Math.log2(p1);
+    if (p0 > 0) entropy -= p0 * Math.log2(p0);
+
+    const gini = 1 - (p1 * p1 + p0 * p0);
+    const purity = Math.max(p1, p0) * 100;
+
+    if (entEl) entEl.innerText = entropy.toFixed(3);
+    if (giniEl) giniEl.innerText = gini.toFixed(3);
+    if (pctEl) pctEl.innerText = `${purity.toFixed(1)}%`;
+    if (barEl) {
+        barEl.style.width = `${purity}%`;
+        barEl.style.background = purity >= 80 ? 'var(--data-emerald)' : (purity >= 65 ? 'var(--data-blue)' : 'var(--data-purple)');
+    }
+}
+
+function updatePCASim() {
+    const l1 = Math.max(0, parseFloat(document.getElementById('pca-l1')?.value || 16.5));
+    const l2 = Math.max(0, parseFloat(document.getElementById('pca-l2')?.value || 4.2));
+    const l3 = Math.max(0, parseFloat(document.getElementById('pca-l3')?.value || 1.8));
+    const l4 = Math.max(0, parseFloat(document.getElementById('pca-l4')?.value || 0.5));
+
+    const total = l1 + l2 + l3 + l4;
+    const box = document.getElementById('pca-results-box');
+    if (!box || total === 0) return;
+
+    const r1 = (l1 / total) * 100;
+    const r2 = (l2 / total) * 100;
+    const r3 = (l3 / total) * 100;
+    const r4 = (l4 / total) * 100;
+
+    const cum1 = r1;
+    const cum2 = cum1 + r2;
+    const cum3 = cum2 + r3;
+    const cum4 = 100.0;
+
+    box.innerHTML = `
+        <div style="font-weight: 700; margin-bottom: 8px;">Tổng Phương Sai Toàn Bộ Dữ Liệu: &Sigma;&lambda; = ${total.toFixed(2)}</div>
+        <div style="margin-bottom: 6px;">
+            <strong>PC1:</strong> &lambda;<sub>1</sub> = ${l1.toFixed(1)} &rarr; Giải thích <strong>${r1.toFixed(1)}%</strong> phương sai (Tích lũy: ${cum1.toFixed(1)}%)
+        </div>
+        <div style="margin-bottom: 6px;">
+            <strong>PC2:</strong> &lambda;<sub>2</sub> = ${l2.toFixed(1)} &rarr; Giải thích <strong>${r2.toFixed(1)}%</strong> phương sai (Tích lũy: ${cum2.toFixed(1)}%)
+        </div>
+        <div style="margin-bottom: 6px;">
+            <strong>PC3:</strong> &lambda;<sub>3</sub> = ${l3.toFixed(1)} &rarr; Giải thích <strong>${r3.toFixed(1)}%</strong> phương sai (Tích lũy: ${cum3.toFixed(1)}%)
+        </div>
+        <div style="margin-bottom: 10px;">
+            <strong>PC4:</strong> &lambda;<sub>4</sub> = ${l4.toFixed(1)} &rarr; Giải thích <strong>${r4.toFixed(1)}%</strong> phương sai (Tích lũy: ${cum4.toFixed(1)}%)
+        </div>
+        <div style="padding: 10px; border-radius: 6px; background: var(--slate-100); color: var(--slate-900); font-size: 0.85rem;">
+            💡 <strong>Khuyến nghị chọn số chiều k:</strong> 
+            ${cum1 >= 90 ? 'Chỉ cần chọn k=1 thành phần chính (PC1) là đã giữ lại &ge;90% thông tin!' : 
+              (cum2 >= 90 ? `Nên chọn k=2 thành phần chính (PC1 + PC2), nén từ 4 chiều về 2 chiều mà vẫn bảo toàn <strong>${cum2.toFixed(1)}%</strong> thông tin!` : 
+               `Nên chọn k=3 thành phần chính để bảo toàn <strong>${cum3.toFixed(1)}%</strong> thông tin.`)}
+        </div>
+    `;
+}
+
+function updateLogisticSim(z) {
+    z = parseFloat(z);
+    const zEl = document.getElementById('log-z-val');
+    const probEl = document.getElementById('log-prob-val');
+    const oddsEl = document.getElementById('log-odds-val');
+    const decEl = document.getElementById('log-decision-val');
+
+    if (zEl) zEl.innerText = z.toFixed(2);
+
+    const prob = 1 / (1 + Math.exp(-z));
+    const odds = Math.exp(z);
+
+    if (probEl) probEl.innerText = `${(prob * 100).toFixed(1)}%`;
+    if (oddsEl) oddsEl.innerText = odds >= 100 ? `${odds.toFixed(0)} : 1` : (odds < 0.01 ? `${odds.toFixed(4)} : 1` : `${odds.toFixed(2)} : 1`);
+
+    if (decEl) {
+        if (prob > 0.5) {
+            decEl.innerText = "Dự đoán: LỚP 1";
+            decEl.style.color = "var(--data-emerald)";
+        } else if (prob < 0.5) {
+            decEl.innerText = "Dự đoán: LỚP 0";
+            decEl.style.color = "var(--data-blue)";
+        } else {
+            decEl.innerText = "Ranh giới 50%";
+            decEl.style.color = "var(--data-purple)";
+        }
+    }
+}
+
+// Make functions globally available
+window.switchMLTab = switchMLTab;
+window.updateBVSim = updateBVSim;
+window.updateTreeSim = updateTreeSim;
+window.updatePCASim = updatePCASim;
+window.updateLogisticSim = updateLogisticSim;
+
